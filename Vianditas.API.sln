@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vianditas.API", "Vianditas.API.csproj", "{64433DEE-F3DF-FDB9-B1E4-09B79971B27C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64433DEE-F3DF-FDB9-B1E4-09B79971B27C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64433DEE-F3DF-FDB9-B1E4-09B79971B27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64433DEE-F3DF-FDB9-B1E4-09B79971B27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64433DEE-F3DF-FDB9-B1E4-09B79971B27C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C7D9C38B-582B-4669-A621-00C2CCC91BC6}
+	EndGlobalSection
+EndGlobal
