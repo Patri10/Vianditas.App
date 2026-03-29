@@ -2,13 +2,26 @@ namespace Vianditas.Domain.model
 {
     public class Comercio
     {
+        private Comercio()
+        {
+        }
+
         public Guid Id { get; private set; }
-        public string Nombre { get; private set; }
-        public string Direccion { get; private set; }
+        public string Nombre { get; private set; } = null!;
+        public string Direccion { get; private set; } = null!;
 
         public bool Activo { get; private set; } = true;
-        public string Telefono { get; private set; }
+        public string Telefono { get; private set; } = null!;
 
-        public List<Menu> Menus { get; private set; }
+        public List<Menu> Menus { get; private set; } = new();
+
+        public Comercio(string nombre, string direccion, string telefono, Guid? id = null)
+        {
+            Id = id ?? Guid.NewGuid();
+            Nombre = nombre;
+            Direccion = direccion;
+            Telefono = telefono;
+            Activo = true;
+        }
     }
 }
