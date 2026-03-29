@@ -19,6 +19,8 @@ namespace Vianditas.Data
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Comercio> Comercios { get; set; }
 
+        public DbSet<Disponibilidad_Diaria> DisponibilidadesDiarias { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -32,6 +34,7 @@ namespace Vianditas.Data
             modelBuilder.ApplyConfiguration(new PagoConfiguration());
             modelBuilder.ApplyConfiguration(new CategoriaConfiguration());
             modelBuilder.ApplyConfiguration(new ComercioConfiguration());
+            modelBuilder.ApplyConfiguration(new DisponibilidadDiariaConfiguration());
         }
     }
 }
