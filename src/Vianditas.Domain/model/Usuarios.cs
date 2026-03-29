@@ -13,9 +13,8 @@ public class Usuarios
     public string Correo { get; private set; } = null!;
     public string Contrasena { get; private set; } = null!;
 
-    public Usuarios(string nombre, string correo, string contrasena, Guid? id = null)
+    public Usuarios(string nombre, string correo, string contrasena)
     {
-        Id = id ?? Guid.NewGuid();
         Nombre = nombre;
         Correo = correo;
         Contrasena = contrasena;

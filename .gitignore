@@ -1,0 +1,52 @@
+# Build artifacts
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+
+# IDE folders
+.vs/
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test and coverage output
+TestResults/
+*.trx
+coverage/
+coverage.*
+
+# NuGet packages and caches
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Dotnet tools and local state
+.dotnet/
+
+# Local secrets and environment files
+.env
+.env.*
+secrets.json
+
+# App settings with local/secret values
+appsettings.Local.json
+appsettings.Development.local.json
+
+# EF Core generated SQL scripts (optional local outputs)
+*.sql
+
+# Keep migrations under source control
+#!Migrations/

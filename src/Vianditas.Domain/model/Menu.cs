@@ -19,9 +19,8 @@ namespace Vianditas.Domain.model
 
         public Categoria Categoria { get; private set; } = null!;
 
-        public Menu(string nombre, decimal precio, string descripcion, Guid comercioId, Guid categoriaId, Guid? id = null)
+        public Menu(string nombre, decimal precio, string descripcion, Guid comercioId, Guid categoriaId)
         {
-            Id = id ?? Guid.NewGuid();
             Nombre = nombre;
             Precio = precio;
             Descripcion = descripcion;

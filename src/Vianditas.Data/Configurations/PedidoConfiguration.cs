@@ -13,13 +13,17 @@ namespace Vianditas.Data.Configurations
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id)
+                .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("gen_random_uuid()");
 
-            builder.Property(p => p.Fecha)
+            builder.Property(p => p.UsuarioId)
                 .IsRequired();
 
-            builder.Property(p => p.Total)
-                .HasColumnType("decimal(18,2)")
+            builder.Property(p => p.CategoriaId)
+                .IsRequired();
+
+            builder.Property(p => p.Detalles)
+                .HasMaxLength(1000)
                 .IsRequired();
 
             builder.Property(p => p.Estado)
@@ -27,18 +31,23 @@ namespace Vianditas.Data.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
-            builder.HasOne(p => p.Usuario)
+            builder.HasOne<Usuarios>()
                 .WithMany()
                 .HasForeignKey(p => p.UsuarioId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany(p => p.DetallePedido)
+            builder.HasOne<Categoria>()
+                .WithMany()
+                .HasForeignKey(p => p.CategoriaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany<Detalle_Pedido>()
                 .WithOne(d => d.Pedido)
                 .HasForeignKey(d => d.PedidoId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(p => p.Pago)
-                .WithOne(pg => pg.Pedido)
+            builder.HasOne<Pago>()
+                .WithOne(p => p.Pedido)
                 .HasForeignKey<Pago>(pg => pg.PedidoId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

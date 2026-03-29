@@ -15,9 +15,8 @@ namespace Vianditas.Domain.model
         public string Detalles { get; private set; } = null!;
         public EstadoPedido Estado { get; private set; }
 
-        public Pedido(Guid usuarioId, Guid categoriaId, string detalles, Guid? id = null)
+        public Pedido(Guid usuarioId, Guid categoriaId, string detalles)
         {
-            Id = id ?? Guid.NewGuid();
             UsuarioId = usuarioId;
             CategoriaId = categoriaId;
             Detalles = detalles;

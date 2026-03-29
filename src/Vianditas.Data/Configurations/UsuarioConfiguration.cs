@@ -13,6 +13,7 @@ namespace Vianditas.Data.Configurations
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.Id)
+                .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("gen_random_uuid()");
 
             builder.Property(u => u.Nombre)
@@ -25,7 +26,7 @@ namespace Vianditas.Data.Configurations
             builder.HasIndex(u => u.Correo)
                 .IsUnique();
 
-            builder.Property(u => u.Contraseña)
+            builder.Property(u => u.Contrasena)
                 .HasMaxLength(255)
                 .IsRequired();
         }

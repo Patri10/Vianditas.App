@@ -9,9 +9,8 @@ namespace Vianditas.Domain.model
         public Guid Id { get; private set; }
         public string Nombre { get; private set; } = null!;
 
-        public Categoria(string nombre, Guid? id = null)
+        public Categoria(string nombre)
         {
-            Id = id ?? Guid.NewGuid();
             Nombre = nombre;
         }
     }

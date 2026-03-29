@@ -13,6 +13,7 @@ namespace Vianditas.Data.Configurations
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Id)
+                .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("gen_random_uuid()");
 
             builder.Property(c => c.Nombre)

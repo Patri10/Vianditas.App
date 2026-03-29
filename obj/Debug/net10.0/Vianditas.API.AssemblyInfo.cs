@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Vianditas.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d3b910175bef0215f7bfab2f44d83b17703caac")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ed87c41e7df7c43eccfb801f16b3caca2350a497")]
 [assembly: System.Reflection.AssemblyProductAttribute("Vianditas.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Vianditas.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

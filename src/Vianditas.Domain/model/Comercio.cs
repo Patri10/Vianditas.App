@@ -15,9 +15,8 @@ namespace Vianditas.Domain.model
 
         public List<Menu> Menus { get; private set; } = new();
 
-        public Comercio(string nombre, string direccion, string telefono, Guid? id = null)
+        public Comercio(string nombre, string direccion, string telefono)
         {
-            Id = id ?? Guid.NewGuid();
             Nombre = nombre;
             Direccion = direccion;
             Telefono = telefono;

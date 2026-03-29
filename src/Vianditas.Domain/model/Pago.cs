@@ -17,9 +17,8 @@ namespace Vianditas.Domain.model
 
         public DateTime FechaCreacion { get; private set; } = DateTime.UtcNow;
 
-        public Pago(Guid pedidoId, string? mercadoPagoId = null, string? linkdePago = null, Guid? id = null)
+        public Pago(Guid pedidoId, string? mercadoPagoId = null, string? linkdePago = null)
         {
-            Id = id ?? Guid.NewGuid();
             PedidoId = pedidoId;
             MercadoPagoId = mercadoPagoId;
             LinkdePago = linkdePago;

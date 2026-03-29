@@ -13,6 +13,7 @@ namespace Vianditas.Data.Configurations
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id)
+                .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("gen_random_uuid()");
 
             builder.Property(p => p.MercadoPagoId)
@@ -29,7 +30,7 @@ namespace Vianditas.Data.Configurations
                 .IsRequired();
 
             builder.HasOne(p => p.Pedido)
-                .WithOne(pd => pd.Pago)
+                .WithOne()
                 .HasForeignKey<Pago>(p => p.PedidoId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

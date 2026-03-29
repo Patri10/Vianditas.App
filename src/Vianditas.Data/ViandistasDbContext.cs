@@ -14,7 +14,7 @@ namespace Vianditas.Data
         public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
-        public DbSet<DetallePedido> DetallePedidos { get; set; }
+        public DbSet<Detalle_Pedido> DetallePedidos { get; set; }
         public DbSet<Pago> Pagos { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Comercio> Comercios { get; set; }
@@ -22,6 +22,8 @@ namespace Vianditas.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.HasPostgresExtension("pgcrypto");
 
             modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
             modelBuilder.ApplyConfiguration(new MenuConfiguration());
