@@ -1,7 +1,5 @@
 namespace Vianditas.Domain.model;
 
-
-
 public class Usuarios
 {
     private Usuarios()
@@ -10,13 +8,13 @@ public class Usuarios
 
     public Guid Id { get; private set; }
     public string Nombre { get; private set; } = null!;
-    public string Correo { get; private set; } = null!;
-    public string Contrasena { get; private set; } = null!;
+    public string NumeroWhatsapp { get; private set; } = null!;
+    public string WhatsappUserId { get; private set; } = null!;
 
-    public Usuarios(string nombre, string correo, string contrasena)
+    public Usuarios(string nombre, string numeroWhatsapp, string whatsappUserId)
     {
         Nombre = nombre;
-        Correo = correo;
-        Contrasena = contrasena;
+        NumeroWhatsapp = numeroWhatsapp;
+        WhatsappUserId = whatsappUserId;
     }
 }

@@ -19,16 +19,19 @@ namespace Vianditas.Data.Configurations
             builder.Property(u => u.Nombre)
                 .HasMaxLength(100);
 
-            builder.Property(u => u.Correo)
-                .HasMaxLength(150)
+            builder.Property(u => u.NumeroWhatsapp)
+                .HasMaxLength(20)
                 .IsRequired();
 
-            builder.HasIndex(u => u.Correo)
+            builder.HasIndex(u => u.NumeroWhatsapp)
                 .IsUnique();
 
-            builder.Property(u => u.Contrasena)
-                .HasMaxLength(255)
+            builder.Property(u => u.WhatsappUserId)
+                .HasMaxLength(64)
                 .IsRequired();
+
+            builder.HasIndex(u => u.WhatsappUserId)
+                .IsUnique();
         }
     }
 }

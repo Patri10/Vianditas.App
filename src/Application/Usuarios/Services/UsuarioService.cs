@@ -21,7 +21,7 @@ public class UsuarioService : IUsuarioService
 
     public async Task<UsuarioResponseDTO?> CrearUsuarioAsync(CrearUsuarioRequestDTO dto)
     {
-        // TODO: Implementar lógica + hash contraseña
+        // TODO: Implementar logica de alta y sincronizacion de identidad WhatsApp
         throw new NotImplementedException();
     }
 
