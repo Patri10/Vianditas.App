@@ -17,4 +17,11 @@ public class Usuarios
         NumeroWhatsapp = numeroWhatsapp;
         WhatsappUserId = whatsappUserId;
     }
+
+    public void Update(string nombre, string numeroWhatsapp, string whatsappUserId)
+    {
+        Nombre = nombre;
+        NumeroWhatsapp = numeroWhatsapp;
+        WhatsappUserId = whatsappUserId;
+    }
 }

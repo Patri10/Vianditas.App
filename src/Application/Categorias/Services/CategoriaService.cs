@@ -20,7 +20,7 @@ public class CategoriaService : ICategoriaService
 
     public async Task<IEnumerable<CategoriaResponseDTO>> ObtenerTodasAsync()
     {
-        // TODO: Implementar lógica
+        
         throw new NotImplementedException();
     }
 

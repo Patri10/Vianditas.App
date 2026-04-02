@@ -10,8 +10,8 @@ public class CrearUsuarioRequestValidator : AbstractValidator<CrearUsuarioReques
         RuleFor(x => x.Nombre)
             .NotEmpty()
             .WithMessage("El nombre es obligatorio")
-            .Length(3, 100)
-            .WithMessage("El nombre debe tener entre 3 y 100 caracteres");
+            .Length(3, 30)
+            .WithMessage("El nombre debe tener entre 3 y 30 caracteres");
 
         RuleFor(x => x.NumeroWhatsapp)
             .NotEmpty()

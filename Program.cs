@@ -39,6 +39,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
 // Mapear controladores
 app.MapControllers();
 
