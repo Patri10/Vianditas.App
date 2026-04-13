@@ -1,6 +1,14 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using Vianditas.Application.Categorias.Services;
+using Vianditas.Application.Comercios.Services;
+using Vianditas.Application.Menus.Contract;
+using Vianditas.Application.Menus.Services;
+using Vianditas.Application.Menus.infrastructure;
+using Vianditas.Application.Usuarios.infrastructure;
+using Vianditas.Application.Usuarios.Contract;
+using Vianditas.Application.Usuarios.Services;
 using Vianditas.Data;
 
 
@@ -25,6 +33,14 @@ if (string.IsNullOrWhiteSpace(connectionString))
 // Configurar DbContext con PostgreSQL
 builder.Services.AddDbContext<ViandistasDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+// Registrar servicios y repositorios de aplicación
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IMenuService, MenuService>();
+builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+builder.Services.AddScoped<IComercioService, ComercioService>();
 
 // Agregar soporte para controladores
 builder.Services.AddControllers();

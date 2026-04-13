@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Vianditas.Application.Usuarios.Contract;
 using Vianditas.Data;
-using Vianditas.Domain.model;
-using UsuarioEntity = Vianditas.Domain.model.Usuarios;
+using Vianditas.Domain.model; 
+using Usuario = Vianditas.Domain.model.Usuarios;
 
 namespace Vianditas.Application.Usuarios.infrastructure;
 
@@ -15,35 +15,35 @@ public class UsuarioRepository : IUsuarioRepository
         _dbContext = dbContext;
     }
 
-    public async Task<UsuarioEntity?> GetByIdAsync(Guid id)
+    public async Task<Usuario?> GetByIdAsync(Guid id)
     {
         return await _dbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
-    }
+    } 
 
-    public async Task<UsuarioEntity?> GetByNumeroWhatsappAsync(string numeroWhatsapp)
+    public async Task<Usuario?> GetByNumeroWhatsappAsync(string numeroWhatsapp)
     {
         return await _dbContext.Usuarios.FirstOrDefaultAsync(u => u.NumeroWhatsapp == numeroWhatsapp);
     }
 
-    public async Task<List<UsuarioEntity>> GetByNombreAsync(string nombre)
+    public async Task<List<Usuario>> GetByNombreAsync(string nombre)
     {
         return await _dbContext.Usuarios
             .Where(u => u.Nombre.Contains(nombre))
             .ToListAsync();
     }
 
-    public async Task<List<UsuarioEntity>> GetAllAsync()
+    public async Task<List<Usuario>> GetAllAsync()
     {
         return await _dbContext.Usuarios.ToListAsync();
     }
 
-    public async Task AddAsync(UsuarioEntity usuario)
+    public async Task AddAsync(Usuario usuario)
     {
         _dbContext.Usuarios.Add(usuario);
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(UsuarioEntity usuario)
+    public async Task UpdateAsync(Usuario usuario)
     {
         _dbContext.Usuarios.Update(usuario);
         await _dbContext.SaveChangesAsync();

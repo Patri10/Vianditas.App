@@ -6,12 +6,12 @@ namespace Vianditas.Application.Usuarios.Contract;
 public interface IUsuarioService
 {
     // Commands
-    Task<UsuarioResponseDTO> CreateUserAsync(CreateUserCommandDTO command);
-    Task<UsuarioResponseDTO> UpdateUserAsync(Guid id, UpdateUserCommandDTO command);
-    Task DeleteUserAsync(Guid id, DeleteUserCommandDTO command);
+    Task<UsuarioResponseDTO> CreateUser(CreateUserCommandDTO command);
+    Task<UsuarioResponseDTO> UpdateUser(Guid id, UpdateUserCommandDTO command);
+    Task DeleteUser(Guid id, DeleteUserCommandDTO command);
 
     // Queries
-    Task<UsuarioResponseDTO?> FindByIdAsync(Guid id);
-    Task<List<UsuarioResponseDTO>> FindByNameAsync(string nombre);
-    Task<List<UsuarioResponseDTO>> GetAllAsync();
+    Task<UsuarioResponseDTO?> FindById(Guid id);
+    Task<List<UsuarioResponseDTO>> FindByName(string nombre);
+    Task<List<UsuarioResponseDTO>> GetAll();
 }

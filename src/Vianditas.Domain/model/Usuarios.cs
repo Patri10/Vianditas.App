@@ -13,15 +13,45 @@ public class Usuarios
 
     public Usuarios(string nombre, string numeroWhatsapp, string whatsappUserId)
     {
-        Nombre = nombre;
-        NumeroWhatsapp = numeroWhatsapp;
-        WhatsappUserId = whatsappUserId;
+        SetNombre(nombre);
+        SetNumeroWhatsapp(numeroWhatsapp);
+        SetWhatsappUserId(whatsappUserId);
     }
 
     public void Update(string nombre, string numeroWhatsapp, string whatsappUserId)
     {
+        SetNombre(nombre);
+        SetNumeroWhatsapp(numeroWhatsapp);
+        SetWhatsappUserId(whatsappUserId);
+    }
+
+    private void SetNombre(string nombre)
+    {
+        if (string.IsNullOrWhiteSpace(nombre))
+        {
+            throw new ArgumentException("El nombre no puede estar vacío.", nameof(nombre));
+        }
+
         Nombre = nombre;
+    }
+
+    private void SetNumeroWhatsapp(string numeroWhatsapp)
+    {
+        if (string.IsNullOrWhiteSpace(numeroWhatsapp))
+        {
+            throw new ArgumentException("El número de WhatsApp no puede estar vacío.", nameof(numeroWhatsapp));
+        }
+
         NumeroWhatsapp = numeroWhatsapp;
+    }
+
+    private void SetWhatsappUserId(string whatsappUserId)
+    {
+        if (string.IsNullOrWhiteSpace(whatsappUserId))
+        {
+            throw new ArgumentException("El ID de usuario de WhatsApp no puede estar vacío.", nameof(whatsappUserId));
+        }
+
         WhatsappUserId = whatsappUserId;
     }
 }

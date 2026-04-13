@@ -27,4 +27,5 @@ public class CrearUsuarioRequestValidator : AbstractValidator<CrearUsuarioReques
             .MaximumLength(64)
             .WithMessage("El identificador de WhatsApp no puede exceder 64 caracteres");
     }
+
 }

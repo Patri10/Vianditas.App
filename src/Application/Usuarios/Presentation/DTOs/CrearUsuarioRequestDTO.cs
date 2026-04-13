@@ -6,3 +6,5 @@ public class CrearUsuarioRequestDTO
     public string NumeroWhatsapp { get; set; } = string.Empty;
     public string WhatsappUserId { get; set; } = string.Empty;
 }
+
+
