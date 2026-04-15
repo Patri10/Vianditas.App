@@ -9,8 +9,13 @@ using Vianditas.Application.Menus.infrastructure;
 using Vianditas.Application.Usuarios.infrastructure;
 using Vianditas.Application.Usuarios.Contract;
 using Vianditas.Application.Usuarios.Services;
+using Vianditas.Application.Categorias.Contract;
+using Vianditas.Application.Categorias.Services;
+using Vianditas.Application.Pedidos.Contract;
+using Vianditas.Application.Pedidos.Services;
+using Vianditas.Application.Pedidos.infrastructure;
 using Vianditas.Data;
-
+using FluentValidation.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,9 +44,9 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IMenuService, MenuService>();
 builder.Services.AddScoped<IMenuRepository, MenuRepository>();
-builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 builder.Services.AddScoped<IComercioService, ComercioService>();
-
+builder.Services.AddScoped<IPedidoService, PedidoService>();
+builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
 // Agregar soporte para controladores
 builder.Services.AddControllers();
 

@@ -13,7 +13,7 @@ public class CrearPedidoRequestValidator : AbstractValidator<CrearPedidoRequestD
 
         RuleFor(x => x.CategoriaId)
             .NotEmpty()
-            .WithMessage("La categoría es obligatoria");
+            .WithMessage("La categoria es obligatoria");
 
         RuleFor(x => x.Detalles)
             .NotEmpty()
@@ -24,10 +24,23 @@ public class CrearPedidoRequestValidator : AbstractValidator<CrearPedidoRequestD
         RuleForEach(x => x.Detalles)
             .SetValidator(new DetallePedidoRequestValidator());
 
-        RuleFor(x => x.Notas)
-            .MaximumLength(500)
-            .WithMessage("Las notas no pueden exceder 500 caracteres")
-            .When(x => !string.IsNullOrWhiteSpace(x.Notas));
+        RuleFor(x => x.Total)
+            .GreaterThan(0)
+            .WithMessage("El total del pedido debe ser mayor a 0");
+
+        RuleFor(x => x)
+            .Must(HaveConsistentTotal)
+            .WithMessage("El total debe coincidir con la suma de subtotales de los detalles.");
+
+        RuleFor(x => x.HoraCreacion)
+            .LessThanOrEqualTo(DateTime.UtcNow)
+            .WithMessage("La hora de creacion no puede ser en el futuro");
+    }
+
+    private static bool HaveConsistentTotal(CrearPedidoRequestDTO pedido)
+    {
+        var expected = pedido.Detalles.Sum(d => d.Cantidad * d.PrecioUnitario);
+        return Math.Abs(pedido.Total - expected) <= 0.01m;
     }
 }
 
@@ -43,7 +56,7 @@ public class DetallePedidoRequestValidator : AbstractValidator<DetallePedidoRequ
             .GreaterThan(0)
             .WithMessage("La cantidad debe ser mayor a 0")
             .LessThanOrEqualTo(100)
-            .WithMessage("No se pueden pedir más de 100 unidades por plato");
+            .WithMessage("No se pueden pedir mas de 100 unidades por plato");
 
         RuleFor(x => x.PrecioUnitario)
             .GreaterThan(0)

@@ -5,10 +5,12 @@ namespace Vianditas.Application.Pedidos.Presentation.DTOs;
 public class PedidoResponseDTO
 {
     public Guid Id { get; set; }
-    public Guid UsuarioId { get; set; }
     public EstadoPedido Estado { get; set; }
-    public DateTime FechaCreacion { get; set; }
+    public Guid UsuarioId { get; set; }
+    public Guid CategoriaId { get; set; }
     public decimal Total { get; set; }
+    public DateTime HoraCreacion { get; set; }
+
     public List<DetallePedidoResponseDTO> Detalles { get; set; } = new();
 }
 

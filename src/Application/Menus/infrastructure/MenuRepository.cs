@@ -5,7 +5,7 @@ using Vianditas.Data;
 using Vianditas.Domain.model;
 using Menu = Vianditas.Domain.model.Menu;
 
-
+ 
 namespace Vianditas.Application.Menus.infrastructure;
 
 public class MenuRepository : IMenuRepository

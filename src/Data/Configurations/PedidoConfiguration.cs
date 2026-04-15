@@ -16,6 +16,10 @@ namespace Vianditas.Data.Configurations
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("gen_random_uuid()");
 
+            builder.Property(p => p.Estado)
+                .HasConversion<string>()
+                .HasMaxLength(50)
+                .IsRequired();
             builder.Property(p => p.UsuarioId)
                 .IsRequired();
 
@@ -26,10 +30,16 @@ namespace Vianditas.Data.Configurations
                 .HasMaxLength(1000)
                 .IsRequired();
 
-            builder.Property(p => p.Estado)
-                .HasConversion<string>()
-                .HasMaxLength(50)
+            builder.Property(p => p.Total)
+                .HasColumnType("decimal(18,2)")
                 .IsRequired();
+
+            
+            builder.Property(p => p.HoraCreacion)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .ValueGeneratedOnAdd()
+                .IsRequired();
+
 
             builder.HasOne<Usuarios>()
                 .WithMany()

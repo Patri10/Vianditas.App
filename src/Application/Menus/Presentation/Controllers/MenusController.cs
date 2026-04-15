@@ -53,7 +53,7 @@ public class MenusController : ControllerBase
         };
 
         var menu = await _menuService.CreateMenu(command);
-        return CreatedAtAction(nameof(GetByName), new { nombre = menu.Nombre }, menu);
+        return Ok(menu);
     }
 
     [HttpPut("{id:guid}")]
