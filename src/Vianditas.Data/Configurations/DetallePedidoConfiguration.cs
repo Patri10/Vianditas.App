@@ -23,11 +23,6 @@ namespace Vianditas.Data.Configurations
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
 
-            builder.HasOne(d => d.Pedido)
-                .WithMany()
-                .HasForeignKey(d => d.PedidoId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             builder.HasOne(d => d.Menu)
                 .WithMany()
                 .HasForeignKey(d => d.MenuId)

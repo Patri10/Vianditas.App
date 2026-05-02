@@ -29,10 +29,6 @@ namespace Vianditas.Data.Configurations
             builder.Property(p => p.FechaCreacion)
                 .IsRequired();
 
-            builder.HasOne(p => p.Pedido)
-                .WithOne()
-                .HasForeignKey<Pago>(p => p.PedidoId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Vianditas.Data;
@@ -11,9 +12,11 @@ using Vianditas.Data;
 namespace Vianditas.API.Migrations
 {
     [DbContext(typeof(ViandistasDbContext))]
-    partial class ViandistasDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260502230646_UpdateModels_Fixed")]
+    partial class UpdateModels_Fixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

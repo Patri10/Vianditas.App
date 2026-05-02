@@ -41,12 +41,12 @@ namespace Vianditas.Data.Configurations
                 .HasForeignKey(p => p.CategoriaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasMany<Detalle_Pedido>()
+            builder.HasMany(p => p.DetallePedidos)
                 .WithOne(d => d.Pedido)
                 .HasForeignKey(d => d.PedidoId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne<Pago>()
+            builder.HasOne(p => p.Pago)
                 .WithOne(p => p.Pedido)
                 .HasForeignKey<Pago>(pg => pg.PedidoId)
                 .OnDelete(DeleteBehavior.Cascade);

@@ -15,12 +15,27 @@ namespace Vianditas.Domain.model
         public string Detalles { get; private set; } = null!;
         public EstadoPedido Estado { get; private set; }
 
+        // Navegación
+        public ICollection<Detalle_Pedido> DetallePedidos { get; private set; } = new List<Detalle_Pedido>();
+        public Pago? Pago { get; private set; }
+
         public Pedido(Guid usuarioId, Guid categoriaId, string detalles)
         {
             UsuarioId = usuarioId;
             CategoriaId = categoriaId;
             Detalles = detalles;
             Estado = EstadoPedido.Pendiente;
+        }
+
+        public void AgregarDetalle(Detalle_Pedido detalle)
+        {
+            DetallePedidos.Add(detalle);
+        }
+
+        // Métodos de dominio
+        public void ActualizarEstado(EstadoPedido nuevoEstado)
+        {
+            Estado = nuevoEstado;
         }
     }
 }

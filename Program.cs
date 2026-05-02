@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using Vianditas.Data;
+using Vianditas.API.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// ── Swagger / OpenAPI ──────────────────────────────────────────────────────────
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
+// ── PostgreSQL / EF Core ───────────────────────────────────────────────────────
 var connectionString =
     Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
     ?? ConvertDatabaseUrl(Environment.GetEnvironmentVariable("DATABASE_URL"))
@@ -15,16 +18,24 @@ var connectionString =
 if (string.IsNullOrWhiteSpace(connectionString))
 {
     throw new InvalidOperationException(
-        "No se encontro la cadena de conexion. Configura ConnectionStrings__DefaultConnection o DATABASE_URL.");
+        "No se encontró la cadena de conexión. Configura ConnectionStrings__DefaultConnection o DATABASE_URL.");
 }
 
-// Configurar DbContext con PostgreSQL
 builder.Services.AddDbContext<ViandistasDbContext>(options =>
     options.UseNpgsql(connectionString));
 
+// ── CORS (para Evolution API / n8n) ───────────────────────────────────────────
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// ── Middleware ─────────────────────────────────────────────────────────────────
+app.UseCors("AllowAll");
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -32,39 +43,37 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// ── Endpoints ─────────────────────────────────────────────────────────────────
+app.MapMenuEndpoints();
+app.MapPedidoEndpoints();
+app.MapUsuarioEndpoints();
+app.MapCategoriaEndpoints();
+app.MapComercioEndpoints();
+app.MapPagoEndpoints();
 
-app.MapGet("/weatherforecast", () =>
+// ── Health check básico ────────────────────────────────────────────────────────
+app.MapGet("/health", () => Results.Ok(new { status = "OK", timestamp = DateTime.UtcNow }))
+    .WithTags("Health")
+    .WithName("HealthCheck")
+    .WithSummary("Verifica que la API esté activa");
+
+using (var scope = app.Services.CreateScope())
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    var db = scope.ServiceProvider.GetRequiredService<ViandistasDbContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
 static string? ConvertDatabaseUrl(string? databaseUrl)
 {
     if (string.IsNullOrWhiteSpace(databaseUrl))
-    {
         return null;
-    }
 
     if (!databaseUrl.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase)
         && !databaseUrl.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
-    {
         return databaseUrl;
-    }
 
     var uri = new Uri(databaseUrl);
     var userInfo = uri.UserInfo.Split(':', 2);
@@ -78,13 +87,12 @@ static string? ConvertDatabaseUrl(string? databaseUrl)
         Database = uri.AbsolutePath.TrimStart('/'),
         Username = username,
         Password = password,
-        SslMode = SslMode.Require
+        SslMode = SslMode.Disable,
+        Pooling = false,
+        KeepAlive = 1
     };
 
     return csBuilder.ConnectionString;
 }
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+

@@ -25,5 +25,18 @@ namespace Vianditas.Domain.model
             Estado = "Pendiente";
             FechaCreacion = DateTime.UtcNow;
         }
+
+        // Métodos de dominio
+        public void ActualizarEstado(string nuevoEstado)
+        {
+            Estado = nuevoEstado;
+        }
+
+        public void ActualizarLinkPago(string? linkdePago, string? mercadoPagoId = null)
+        {
+            LinkdePago = linkdePago;
+            if (mercadoPagoId is not null)
+                MercadoPagoId = mercadoPagoId;
+        }
     }
 }

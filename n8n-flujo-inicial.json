@@ -1,0 +1,265 @@
+{
+  "name": "Vianditas WhatsApp Bot (Evolution API)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "evolution-webhook",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "1",
+      "name": "Webhook (Evolution API)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.body.data.messageType }}",
+              "value2": "conversation"
+            }
+          ]
+        }
+      },
+      "id": "2",
+      "name": "Es mensaje de texto?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "telefono",
+              "value": "={{ $json.body.data.key.remoteJid.split('@')[0] }}"
+            },
+            {
+              "name": "nombre",
+              "value": "={{ $json.body.data.pushName }}"
+            },
+            {
+              "name": "mensaje",
+              "value": "={{ $json.body.data.message.conversation }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3",
+      "name": "Extraer Datos",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [650, 280]
+    },
+    {
+      "parameters": {
+        "url": "=http://host.docker.internal:5000/api/usuarios/buscar?correo={{ $json.telefono }}@whatsapp.com",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4",
+      "name": "Verificar Usuario en API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [850, 280],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.statusCode }}",
+              "operation": "equal",
+              "value2": 404
+            }
+          ]
+        }
+      },
+      "id": "5",
+      "name": "Usuario no existe?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1050, 280]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:5000/api/usuarios",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nombre",
+              "value": "={{ $('Extraer Datos').item.json.nombre }}"
+            },
+            {
+              "name": "correo",
+              "value": "={{ $('Extraer Datos').item.json.telefono }}@whatsapp.com"
+            },
+            {
+              "name": "contrasena",
+              "value": "whatsapp123"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6",
+      "name": "Crear Usuario",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1250, 180]
+    },
+    {
+      "parameters": {
+        "url": "http://host.docker.internal:5000/api/categorias",
+        "options": {}
+      },
+      "id": "7",
+      "name": "Obtener Categorias",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1250, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://tu-evolution-api.com/message/sendText/InstanciaBot",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "TU_API_KEY_AQUI"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Extraer Datos').item.json.telefono }}"
+            },
+            {
+              "name": "text",
+              "value": "=¡Hola {{ $('Extraer Datos').item.json.nombre }}! 👋\nBienvenido a Vianditas. Estas son las categorías que tenemos hoy:\n\n{{ $json.map(c => \"- \" + c.nombre).join('\\n') }}\n\n¿Qué te gustaría pedir?"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "8",
+      "name": "Enviar Menú por WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [1500, 400]
+    }
+  ],
+  "connections": {
+    "Webhook (Evolution API)": {
+      "main": [
+        [
+          {
+            "node": "Es mensaje de texto?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Es mensaje de texto?": {
+      "main": [
+        [
+          {
+            "node": "Extraer Datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extraer Datos": {
+      "main": [
+        [
+          {
+            "node": "Verificar Usuario en API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Usuario en API": {
+      "main": [
+        [
+          {
+            "node": "Usuario no existe?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Usuario no existe?": {
+      "main": [
+        [
+          {
+            "node": "Crear Usuario",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Obtener Categorias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear Usuario": {
+      "main": [
+        [
+          {
+            "node": "Obtener Categorias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener Categorias": {
+      "main": [
+        [
+          {
+            "node": "Enviar Menú por WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f7ab0a70-8abf-470a-a5fb-df6e85764c91"
+}

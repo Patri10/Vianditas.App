@@ -29,5 +29,8 @@ namespace Vianditas.Domain.model
             Activo = true;
         }
 
+        // Métodos de dominio
+        public void Desactivar() => Activo = false;
+        public void Activar() => Activo = true;
     }
 }

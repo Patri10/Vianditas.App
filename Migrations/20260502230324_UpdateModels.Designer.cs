@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Vianditas.Data;
@@ -11,9 +12,11 @@ using Vianditas.Data;
 namespace Vianditas.API.Migrations
 {
     [DbContext(typeof(ViandistasDbContext))]
-    partial class ViandistasDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260502230324_UpdateModels")]
+    partial class UpdateModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,6 +94,9 @@ namespace Vianditas.API.Migrations
                     b.Property<Guid>("PedidoId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("PedidoId1")
+                        .HasColumnType("uuid");
+
                     b.Property<double>("PrecioUnitario")
                         .HasColumnType("decimal(18,2)");
 
@@ -99,6 +105,8 @@ namespace Vianditas.API.Migrations
                     b.HasIndex("MenuId");
 
                     b.HasIndex("PedidoId");
+
+                    b.HasIndex("PedidoId1");
 
                     b.ToTable("DetallePedidos", (string)null);
                 });
@@ -170,9 +178,15 @@ namespace Vianditas.API.Migrations
                     b.Property<Guid>("PedidoId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("PedidoId1")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PedidoId")
+                        .IsUnique();
+
+                    b.HasIndex("PedidoId1")
                         .IsUnique();
 
                     b.ToTable("Pagos", (string)null);
@@ -249,10 +263,14 @@ namespace Vianditas.API.Migrations
                         .IsRequired();
 
                     b.HasOne("Vianditas.Domain.model.Pedido", "Pedido")
-                        .WithMany("DetallePedidos")
+                        .WithMany()
                         .HasForeignKey("PedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Vianditas.Domain.model.Pedido", null)
+                        .WithMany("DetallePedidos")
+                        .HasForeignKey("PedidoId1");
 
                     b.Navigation("Menu");
 
@@ -281,10 +299,14 @@ namespace Vianditas.API.Migrations
             modelBuilder.Entity("Vianditas.Domain.model.Pago", b =>
                 {
                     b.HasOne("Vianditas.Domain.model.Pedido", "Pedido")
-                        .WithOne("Pago")
+                        .WithOne()
                         .HasForeignKey("Vianditas.Domain.model.Pago", "PedidoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Vianditas.Domain.model.Pedido", null)
+                        .WithOne("Pago")
+                        .HasForeignKey("Vianditas.Domain.model.Pago", "PedidoId1");
 
                     b.Navigation("Pedido");
                 });

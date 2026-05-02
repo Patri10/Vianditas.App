@@ -18,12 +18,13 @@ namespace Vianditas.Domain.model
         public Guid PedidoId { get; private set; }
         public Pedido Pedido { get; private set; } = null!;
 
-        public Detalle_Pedido(int cantidad, double precioUnitario, Guid menuId, Guid pedidoId)
+        public Detalle_Pedido(int cantidad, double precioUnitario, Guid menuId, Guid? pedidoId = null)
         {
             Cantidad = cantidad;
             PrecioUnitario = precioUnitario;
             MenuId = menuId;
-            PedidoId = pedidoId;
+            if (pedidoId.HasValue)
+                PedidoId = pedidoId.Value;
         }
 
     }
