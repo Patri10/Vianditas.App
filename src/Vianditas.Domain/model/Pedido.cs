@@ -10,7 +10,7 @@ namespace Vianditas.Domain.model
         }
 
         public Guid Id { get; private set; }
-        public Guid UsuarioId { get; private set; }
+        public Guid ClienteId { get; private set; }
         public Guid CategoriaId { get; private set; }
         public string Detalles { get; private set; } = null!;
         public EstadoPedido Estado { get; private set; }
@@ -19,9 +19,9 @@ namespace Vianditas.Domain.model
         public ICollection<Detalle_Pedido> DetallePedidos { get; private set; } = new List<Detalle_Pedido>();
         public Pago? Pago { get; private set; }
 
-        public Pedido(Guid usuarioId, Guid categoriaId, string detalles)
+        public Pedido(Guid clienteId, Guid categoriaId, string detalles)
         {
-            UsuarioId = usuarioId;
+            ClienteId = clienteId;
             CategoriaId = categoriaId;
             Detalles = detalles;
             Estado = EstadoPedido.Pendiente;

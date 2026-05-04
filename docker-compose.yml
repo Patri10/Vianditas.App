@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  # Base de Datos
+  postgres:
+    image: postgres:15-alpine
+    container_name: vianditas-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./.docker/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+
+  # Redis (Necesario para Evolution API v2)
+  redis:
+    image: redis:alpine
+    container_name: vianditas-redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  # Nuestra API de Vianditas
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vianditas-api
+    environment:
+      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/vianditas
+    ports:
+      - "5000:8080"
+    depends_on:
+      - postgres
+    restart: always
+
+  # Evolution API (WhatsApp)
+  evolution:
+    image: atendai/evolution-api:v2.1.1
+    container_name: vianditas-evolution
+    environment:
+      # Configuraciones de servidor
+      - SERVER_URL=http://localhost:8081
+      - CORS_ORIGIN=*
+      - CORS_METHODS=POST,GET,PUT,DELETE
+      - CORS_CREDENTIALS=true
+      # Base de datos y caché
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_CONNECTION_URI=postgresql://postgres:password123@postgres:5432/evolution
+      - CACHE_REDIS_URI=redis://redis:6379/1
+      - REDIS_URI=redis://redis:6379/1
+      # Seguridad y API Keys
+      - AUTHENTICATION_TYPE=apikey
+      - AUTHENTICATION_API_KEY=B6D711FCDE4D4FD5936544120E713976
+      # Webhooks (Conectado a n8n)
+      - WEBHOOK_GLOBAL_URL=http://n8n:5678/webhook/evolution-webhook
+      - WEBHOOK_GLOBAL_ENABLED=false
+      - WEBHOOK_GLOBAL_EVENTS=APPLICATION_STARTUP,QRCODE_UPDATED,MESSAGES_SET,MESSAGES_UPSERT,MESSAGES_UPDATE,MESSAGE_STATUS_UPDATE,CONNECTION_UPDATE
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+      - redis
+    restart: always
+
+  # n8n (Flujo de automatización)
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: vianditas-n8n
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=production
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=America/Argentina/Buenos_Aires
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+    restart: always
+
+volumes:
+  pgdata:
+  n8n_data:

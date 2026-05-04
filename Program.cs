@@ -47,6 +47,7 @@ app.UseHttpsRedirection();
 app.MapMenuEndpoints();
 app.MapPedidoEndpoints();
 app.MapUsuarioEndpoints();
+app.MapClienteEndpoints();
 app.MapCategoriaEndpoints();
 app.MapComercioEndpoints();
 app.MapPagoEndpoints();

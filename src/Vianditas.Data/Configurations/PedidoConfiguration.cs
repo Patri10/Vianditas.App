@@ -16,7 +16,7 @@ namespace Vianditas.Data.Configurations
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("gen_random_uuid()");
 
-            builder.Property(p => p.UsuarioId)
+            builder.Property(p => p.ClienteId)
                 .IsRequired();
 
             builder.Property(p => p.CategoriaId)
@@ -31,9 +31,9 @@ namespace Vianditas.Data.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
-            builder.HasOne<Usuarios>()
+            builder.HasOne<Cliente>()
                 .WithMany()
-                .HasForeignKey(p => p.UsuarioId)
+                .HasForeignKey(p => p.ClienteId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne<Categoria>()

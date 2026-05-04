@@ -19,7 +19,7 @@ public static class PedidoEndpoints
                     .ThenInclude(d => d.Menu)
                 .Select(p => new PedidoDto(
                     p.Id,
-                    p.UsuarioId,
+                    p.ClienteId,
                     p.Estado.ToString(),
                     p.Detalles,
                     p.DetallePedidos.Select(d => new DetallePedidoDto(
@@ -50,7 +50,7 @@ public static class PedidoEndpoints
 
             return Results.Ok(new PedidoDto(
                 pedido.Id,
-                pedido.UsuarioId,
+                pedido.ClienteId,
                 pedido.Estado.ToString(),
                 pedido.Detalles,
                 pedido.DetallePedidos.Select(d => new DetallePedidoDto(
@@ -66,17 +66,17 @@ public static class PedidoEndpoints
         .WithName("GetPedidoById")
         .WithSummary("Obtiene un pedido por ID");
 
-        // GET /api/pedidos/usuario/{usuarioId} — Pedidos de un usuario (para el bot)
-        group.MapGet("/usuario/{usuarioId:guid}", async (Guid usuarioId, ViandistasDbContext db) =>
+        // GET /api/pedidos/cliente/{clienteId} — Pedidos de un cliente (para el bot)
+        group.MapGet("/cliente/{clienteId:guid}", async (Guid clienteId, ViandistasDbContext db) =>
         {
             var pedidos = await db.Pedidos
                 .Include(p => p.DetallePedidos)
                     .ThenInclude(d => d.Menu)
-                .Where(p => p.UsuarioId == usuarioId)
+                .Where(p => p.ClienteId == clienteId)
                 .OrderByDescending(p => p.Id)
                 .Select(p => new PedidoDto(
                     p.Id,
-                    p.UsuarioId,
+                    p.ClienteId,
                     p.Estado.ToString(),
                     p.Detalles,
                     p.DetallePedidos.Select(d => new DetallePedidoDto(
@@ -92,20 +92,20 @@ public static class PedidoEndpoints
 
             return Results.Ok(pedidos);
         })
-        .WithName("GetPedidosByUsuario")
-        .WithSummary("Obtiene todos los pedidos de un usuario")
+        .WithName("GetPedidosByCliente")
+        .WithSummary("Obtiene todos los pedidos de un cliente")
         .WithDescription("Endpoint clave para el bot: permite consultar el historial de pedidos de un cliente.");
 
         // POST /api/pedidos — Crear pedido desde el bot
         group.MapPost("/", async (CrearPedidoDto dto, ViandistasDbContext db) =>
         {
-            var usuarioExiste = await db.Usuarios.AnyAsync(u => u.Id == dto.UsuarioId);
-            if (!usuarioExiste) return Results.BadRequest(new { mensaje = "El usuario no existe." });
+            var clienteExiste = await db.Clientes.AnyAsync(c => c.Id == dto.ClienteId);
+            if (!clienteExiste) return Results.BadRequest(new { mensaje = "El cliente no existe." });
 
             var categoriaExiste = await db.Categorias.AnyAsync(c => c.Id == dto.CategoriaId);
             if (!categoriaExiste) return Results.BadRequest(new { mensaje = "La categoría no existe." });
 
-            var pedido = new Pedido(dto.UsuarioId, dto.CategoriaId, dto.Detalles);
+            var pedido = new Pedido(dto.ClienteId, dto.CategoriaId, dto.Detalles);
 
             // Agregar detalles al objeto en memoria antes de guardar
             foreach (var item in dto.Items)

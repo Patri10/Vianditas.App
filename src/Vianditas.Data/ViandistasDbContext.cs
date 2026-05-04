@@ -16,6 +16,7 @@ namespace Vianditas.Data
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<Detalle_Pedido> DetallePedidos { get; set; }
         public DbSet<Pago> Pagos { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Comercio> Comercios { get; set; }
 

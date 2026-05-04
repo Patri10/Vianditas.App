@@ -59,7 +59,7 @@
     },
     {
       "parameters": {
-        "url": "=http://host.docker.internal:5000/api/usuarios/buscar?correo={{ $json.telefono }}@whatsapp.com",
+        "url": "=https://TU_RAILWAY_URL/api/clientes/buscar?telefono={{ $json.telefono }}",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -72,7 +72,7 @@
         "options": {}
       },
       "id": "4",
-      "name": "Verificar Usuario en API",
+      "name": "Verificar Cliente en API",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
       "position": [850, 280],
@@ -91,7 +91,7 @@
         }
       },
       "id": "5",
-      "name": "Usuario no existe?",
+      "name": "Cliente no existe?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
       "position": [1050, 280]
@@ -99,7 +99,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://host.docker.internal:5000/api/usuarios",
+        "url": "https://TU_RAILWAY_URL/api/clientes",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
@@ -108,26 +108,30 @@
               "value": "={{ $('Extraer Datos').item.json.nombre }}"
             },
             {
-              "name": "correo",
-              "value": "={{ $('Extraer Datos').item.json.telefono }}@whatsapp.com"
+              "name": "apellido",
+              "value": "-"
             },
             {
-              "name": "contrasena",
-              "value": "whatsapp123"
+              "name": "telefono",
+              "value": "={{ $('Extraer Datos').item.json.telefono }}"
+            },
+            {
+              "name": "direccion",
+              "value": ""
             }
           ]
         },
         "options": {}
       },
       "id": "6",
-      "name": "Crear Usuario",
+      "name": "Crear Cliente",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
       "position": [1250, 180]
     },
     {
       "parameters": {
-        "url": "http://host.docker.internal:5000/api/categorias",
+        "url": "https://TU_RAILWAY_URL/api/categorias",
         "options": {}
       },
       "id": "7",
@@ -198,29 +202,29 @@
       "main": [
         [
           {
-            "node": "Verificar Usuario en API",
+            "node": "Verificar Cliente en API",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Verificar Usuario en API": {
+    "Verificar Cliente en API": {
       "main": [
         [
           {
-            "node": "Usuario no existe?",
+            "node": "Cliente no existe?",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Usuario no existe?": {
+    "Cliente no existe?": {
       "main": [
         [
           {
-            "node": "Crear Usuario",
+            "node": "Crear Cliente",
             "type": "main",
             "index": 0
           }
@@ -234,7 +238,7 @@
         ]
       ]
     },
-    "Crear Usuario": {
+    "Crear Cliente": {
       "main": [
         [
           {

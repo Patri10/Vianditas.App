@@ -2,7 +2,7 @@ namespace Vianditas.Domain.DTOs;
 
 public record PedidoDto(
     Guid Id,
-    Guid UsuarioId,
+    Guid ClienteId,
     string Estado,
     string Detalles,
     List<DetallePedidoDto> Items
@@ -18,7 +18,7 @@ public record DetallePedidoDto(
 );
 
 public record CrearPedidoDto(
-    Guid UsuarioId,
+    Guid ClienteId,
     Guid CategoriaId,
     string Detalles,
     List<CrearDetallePedidoDto> Items
